@@ -3,8 +3,6 @@
 
 1. LocalStorage
 
-
-
 ### Prototypes
 
 The model on which is something is based or formed.
@@ -13,8 +11,6 @@ The model on which is something is based or formed.
 2. Object.getPrototypeof();
 
 
-
-
-
-
+2. Creating a JS library from Scratch 
+3. Problem Solving (Practise problems)
 
