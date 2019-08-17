@@ -1,0 +1,38 @@
+{
+  "name": "memory_game",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-scripts": "3.1.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "description": "You start with an empty grid that is X by Y (make it configurable). Tell the player to get ready, then highlight a number of cells (also configurable) for a few seconds while telling the user to memorize those cells. The game then goes into “Recall” mode, where the user is challenged to remember those cells after we clear the cells from the grid. If they guess a correct cell, mark it green, and if they guess a wrong cell, mark it red. They win if they guess all the right cells with a maximum of two wrong attempts.",
+  "main": "index.js",
+  "devDependencies": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
