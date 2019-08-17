@@ -26,33 +26,36 @@ class Game extends React.Component {
 	}
 
 	componentDidMount() {
-		setTimeout(
-			() =>
-				this.setState({
-					gameState: 'memorize'
-				}),
-			2000
-		);
-		setTimeout(
-			() =>
-				this.setState({
-					gameState: 'recall'
-				}),
-			4000
-		);
+		this.memorizeTimerId = setTimeout(() => {
+			this.setState({ gameState: 'memorize' }, () => {
+				this.recallTimerId = setTimeout(this.startRecallMode.bind(this), 2000);
+			});
+		}, 2000);
+	}
+	startRecallMode() {
+		this.setState({ gameState: 'recall' }, () => {
+			this.secondsRemaining = this.props.timeoutSeconds;
+			this.playTimerId = setInterval(() => {
+				if (--this.secondsRemaining === 0) {
+					this.setState({
+						gameState: 'lost'
+					});
+				}
+			}, 1000);
+		});
 	}
 
 	recordGuess = ({ cellId, userGuessIsCorrect }) => {
-		let { wrongGuesses, correctGuesses } = this.state;
+		let { wrongGuesses, correctGuesses, gameState } = this.state;
 		if (userGuessIsCorrect) {
 			correctGuesses.push(cellId);
 			if (correctGuesses.length === this.props.activeCells) {
-				gameState += 'won';
+				gameState = this.finishGame('won');
 			}
 		} else {
 			wrongGuesses.push(cellId);
 			if (wrongGuesses.length > this.props.allowedWrongAttempts) {
-				gameState += 'lost';
+				gameState = this.finishGame('lost');
 			}
 		}
 		this.setState({
@@ -61,7 +64,21 @@ class Game extends React.Component {
 			gameState
 		});
 	};
+
+	finishGame(gameState) {
+		clearInterval(this.playTimerId);
+		return gameState;
+	}
+
+	componentWillUnmount() {
+		clearTimeout(this.memorizeTimerId);
+		clearTimeout(this.recallTimerId);
+		this.finishGame();
+	}
+
 	render() {
+		let showActiveCells =
+			['memorize', 'lost'].indexOf(this.state.gameState) >= 0;
 		return (
 			<div className="grid">
 				{this.matrix.map((row, id) => (
@@ -70,6 +87,7 @@ class Game extends React.Component {
 							<Cell
 								key={cellid}
 								id={cellid}
+								showActiveCells={showActiveCells}
 								activeCells={this.activeCells}
 								{...this.state}
 								recordGuess={this.recordGuess}
@@ -77,10 +95,18 @@ class Game extends React.Component {
 						))}
 					</Row>
 				))}
-				<Footer {...this.state} activeCells={this.props.activeCells} />
+				<Footer
+					{...this.state}
+					activeCells={this.props.activeCells}
+					playAgain={this.props.createNewGame}
+				/>
 			</div>
 		);
 	}
 }
+
+Game.defaultProps = {
+	timeoutSeconds: 10
+};
 
 export default Game;

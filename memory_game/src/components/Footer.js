@@ -11,11 +11,23 @@ export default class Footer extends Component {
 			</div>
 		);
 	}
+
+	playAgainButton() {
+		if (['won', 'lost'].indexOf(this.props.gameState) >= 0) {
+			return (
+				<button className="play-again" onClick={this.props.playAgain}>
+					Play Again
+				</button>
+			);
+		}
+	}
 	render() {
+		console.log(this.props);
 		return (
 			<div className="footer">
 				<div className="hint">{this.props.hints[this.props.gameState]}</div>
 				{this.remainingCount()}
+				{this.playAgainButton()}
 			</div>
 		);
 	}
